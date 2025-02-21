@@ -328,3 +328,24 @@ def calc_necessary_auth(sublist):
         for auth in static[sub][2]:
             auths.append(auth)
     return get_optimized_auths(auths)
+
+def add_sub(sublist):
+    static = get_static()
+    user = get_user()
+    for s in sublist:
+        sub = s.lower()
+        if sub not in static:
+            raise ValueError(f"Sub {sub} not found in static data.")
+        elif sub in user["subs"]:
+            raise ValueError(f"Sub {sub} already in user data.")
+        user["subs"].append(sub)
+    save_user(user)
+
+def rem_sub(sublist):
+    user = get_user()
+    for s in sublist:
+        sub = s.lower()
+        if sub not in user["subs"]:
+            raise ValueError(f"Sub {sub} not found in user data.")
+        user["subs"].remove(sub)
+    save_user(user)
