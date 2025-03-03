@@ -1,5 +1,8 @@
 import json
 from twitchAPI.type import AuthScope as AS
+import requests
+import base64
+import os
 
 def get_static():
     with open("Data/static.json", "r") as file:
@@ -8,6 +11,11 @@ def get_static():
 def get_user():
     with open("Data/user.json", "r") as file:
         return json.load(file)
+
+def get_auth():
+    with open("Data/config.json", "r") as file:
+        data = json.load(file)
+        return [data["client_id"], data["client_secret"]]
 
 def save_static(data):
     with open("Data/static.json", "w") as file:
@@ -300,6 +308,8 @@ def convert_auths(authlist):
                     raise ValueError("Invalid auth scope: " + authlist[a] + " at position " + str(a) + ", no matching scope found for scope moderator:read")
             else:
                 raise ValueError("Invalid auth scope: " + authlist[a] + " at position " + str(a) + ", no matching scope found for scope moderator")
+        else:
+            raise ValueError("Invalid auth scope: " + authlist[a] + " at position " + str(a) + ", no matching scope found")
 
 def get_optimized_auths(authlist):
     output = []
@@ -349,3 +359,19 @@ def rem_sub(sublist):
             raise ValueError(f"Sub {sub} not found in user data.")
         user["subs"].remove(sub)
     save_user(user)
+
+def get_subdirs(directory):
+    subdirs = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
+    return subdirs
+
+def get_github_file_content(owner, repo, path, branch='main', token=None):
+    url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={branch}"
+    headers = {}
+    if token:
+        headers['Authorization'] = f'token {token}'
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        content = response.json()['content']
+        return base64.b64decode(content).decode('utf-8')
+    else:
+        return None
