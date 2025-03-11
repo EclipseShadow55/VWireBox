@@ -18,7 +18,7 @@ def update_file(owner, repo, path, branch='main', token=None):
     with open(os.environ["LOG_FILE"], "a") as f:
         print("Updating file:", path, file=f)
     if compare_files(owner, repo, path, branch, token):
-        print("    File is already up to date.")
+        print("    File is up to date.")
         with open(os.environ["LOG_FILE"], "a") as f:
             print("    File is already up to date.", file=f)
     else:
@@ -32,14 +32,14 @@ def update_file(owner, repo, path, branch='main', token=None):
         with open(os.environ["LOG_FILE"], "a") as f:
             print("    File updated.", file=f)
 
-def update_all():
+def update_all(owner, repo):
     print("Checking for updates...")
     with open(os.environ["LOG_FILE"], "a") as f:
         print("Checking for updates", file=f)
     update = False
     needs_to_update = []
     for file in FILES:
-        if not compare_files("EShadow55", "Twitch-Connector", file):
+        if not compare_files("EclipseShadow55", "Twitch-Connector", file):
             needs_to_update.append(file)
             update = True
     print("Update needed, updating..." if update else "No update needed, returning to main program.")
@@ -47,7 +47,7 @@ def update_all():
         print("Update needed, updating..." if update else "No update needed, returning to main program.", file=f)
     if update:
         for file in needs_to_update:
-            update_file("EShadow55", "Twitch-Connector", file)
+            update_file(owner, repo, file)
         if platform.system() == "Windows":
             os.system(f"python {os.path.dirname(os.path.abspath(__file__))}\main.pyw")
         elif platform.system() == "Linux" or platform.system() == "Darwin":
