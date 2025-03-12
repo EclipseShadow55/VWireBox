@@ -49,9 +49,9 @@ def update_all(owner, repo):
         for file in needs_to_update:
             update_file(owner, repo, file)
         if platform.system() == "Windows":
-            os.system(f"python {os.path.dirname(os.path.abspath(__file__))}\main.pyw")
+            os.system(f"python {os.path.dirname(os.path.abspath(__file__))}\\main.pyw")
         elif platform.system() == "Linux" or platform.system() == "Darwin":
-            os.system(f"python3 {os.path.dirname(os.path.abspath(__file__))}\main.pyw")
+            os.system(f"python3 {os.path.dirname(os.path.abspath(__file__))}\\main.pyw")
         else:
             raise OSError(f"Unsupported OS: {platform.system()}")
         print("\n")
