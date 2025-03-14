@@ -27,7 +27,9 @@ if __name__ == "__main__":
                 f.write(f"Plugin {direct} does not have a main.py file, so can not be used.\n")
             raise Warning(f"Plugin {direct} does not have a main.py file, so can not be used.")
     # Check for updates
-    updater.update_all("EclipseShadow55", "Twitch-Connector")
+    # TODO: UNCOMMENT THIS NEXT LINE
+    #
     # Get user data
     user = misc.get_user()
     # Main loop
+
